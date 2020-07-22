@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -36,5 +39,8 @@ public class UglyNumber {
 //        boolean b = u.fun(7);
         int n = u.GetUglyNumber_Solution(7);
         System.out.println(n);
+
+        Map<Integer,Integer> map = new HashMap<>();
+        map.put(1,2);
     }
 }

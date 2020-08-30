@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket demo</title>
+</head>
+<body>
+<!--页面中加一个输入框，表示客户端发送的消息-->
+<input type="text" id="text">
+<button onclick="send()">send</button>
+<button onclick="close()">close</button>
+<div id="message"></div>
+
+<!--    script标签中包含内容就是js代码-->
+<script>
+    //1.和服务器建立连接
+    var webSocket = new webSocket("ws://127.0.0.1:8080/java13_chatroom/message/1");//指定访问的服务器url以ws://开头
+
+    //2.注册回调方法
+    webSocket.onopen = function() {
+        //连接成功后调用的方法
+        console.log("连接成功");
+    }
+    webSocket.onerror = function () {
+        //连接异常调用的方法
+        console.log("连接异常");
+    }
+    webSocket.close = function () {
+        //连接关闭时调用的方法
+        //连接可能时客户端主动关闭，也可能时服务器
+        console.log("连接关闭");
+    }
+    webSocket.onmessage = function () {
+        //收到消息时调用
+        //event是websocket中定义好的对象
+        //使用其中的data属性来获取到服务器发送的正式消息
+        console.log(event.data);
+    }
+    window.onbeforeunload = function () {
+        //网页关闭时主动调用
+        websocket.close()
+    }
+
+    //3.实现send和close函数
+    function send() {
+        //把输入框中的内容发送到服务器
+        //1.先获取到输入框的内容
+        var message = document.getElementById("text").value;
+        //2.使用websocket把数据发送出去。
+        webSocket.send(message);
+        console.log("发送成功"+message);
+    }
+    function close() {
+        websocket.close();
+        console.log("连接关闭");
+    }
+</script>
+
+</body>
+</html>
